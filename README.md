@@ -1,7 +1,16 @@
+
 # Digital Certificate System Frontend
 
-Local Setup:
-    git clone <repo-link>
-    npm install
-    npm run dev
+
+
+
+## Deployment
+
+To deploy this project run
+
+```bash
+  git clone https://github.com/AnudeepReddyBondugula/DigitalCertificateSystemFrontend.git
+  npm install
+  npm run dev
+```
 
