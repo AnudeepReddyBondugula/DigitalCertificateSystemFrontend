@@ -1,0 +1,34 @@
+.main{
+    text-align:'center';
+    background-color: antiquewhite;
+}
+
+h1{
+    font-size:'50px';
+    display : 'full';
+}
+
+.div{
+    display: 'flex';
+    justify-content: 'space-between';
+    align-items: 'center';
+    padding: '20px'
+}
+
+.user{
+    width:'100%';
+    height:'600px';
+    padding :'10px';
+    display : 'flow';
+    float:'left';
+    background-color: 'orange';
+}
+
+.org{
+    width:'100%';
+    height:'600px';
+    padding:'10px';
+    display:'flow';
+    float:'right';
+    background-color : 'yellow';
+}
