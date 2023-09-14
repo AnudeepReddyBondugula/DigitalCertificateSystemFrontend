@@ -1,6 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 
 //import {Container, Paper, Button } from '@mui/material';
+import './Welcome.css';
 import {Container, Button} from '@mui/material';
 function Welcome() {
     return (
