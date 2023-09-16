@@ -1,5 +1,10 @@
 import {Container, Paper, InputLabel, TextField, Button} from "@mui/material";
 import { Link } from 'react-router-dom';
+    const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    // Do something with the selected file, like storing it in state or uploading it to a server
+    console.log('Selected file:', selectedFile);
+    }
     const Register = () => {
     return (
         <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', height: '100vh', backgroundColor: "grey"}}>
@@ -15,6 +20,8 @@ import { Link } from 'react-router-dom';
                         </div>
                         <br/>
                         <div style={{ display: 'block', alignItems: 'center' }}>
+            </div><br />
+                        <div style={{ display: 'block', alignItems: 'center' }}>
                             <InputLabel htmlFor="password">Password</InputLabel>
                             <TextField id="password" type="password" fullWidth />
                         </div><br/>
@@ -23,13 +30,33 @@ import { Link } from 'react-router-dom';
                             <TextField id="rePassword" type="password" fullWidth />
                         </div><br/>
                         <div style={{ display: 'block', alignItems: 'center' }}>
-                            <InputLabel htmlFor="address">Public Address</InputLabel>
+                            <InputLabel htmlFor="address">Private Key</InputLabel>
                             <TextField id="address" type="address" fullWidth />
                         </div><br/>
                         <div style={{ display: 'block', alignItems: 'center' }}>
                             <InputLabel htmlFor="aadhar">Aadhar Number</InputLabel>
                             <TextField id="aadhar" type="number" fullWidth />
                         </div><br/>
+                        <div style={{ display: 'block', alignItems: 'center' }}>
+              <InputLabel htmlFor="upload">Upload Aadhar Photo</InputLabel>
+              <input
+                type="file"
+                id="upload"
+                accept=".jpg, .jpeg, .png"  // Specify accepted file types
+                onChange={handleFileChange}
+              />
+              <br/>
+              <br/>
+              <div style={{ display: 'block', alignItems: 'center' }}>
+              <InputLabel htmlFor="upload">Upload Profile Picture</InputLabel>
+              <input
+                type="file"
+                id="upload"
+                accept=".jpg, .jpeg, .png"  // Specify accepted file types
+                onChange={handleFileChange}
+              />
+            </div><br />
+            </div><br />
                         <Button variant="contained" color="primary">
                             Register
                         </Button>
