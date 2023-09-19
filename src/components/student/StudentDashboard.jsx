@@ -54,6 +54,8 @@ function StudentDashboard() {
   const handleLogout = () => {
     // Implement logout logic here
     sessionStorage.removeItem('jwToken');
+    navigate('/');
+    return;
   };
 
   return (
