@@ -51,9 +51,9 @@ try{
   };
 
   return (
-    <Container maxWidth="xs">
+    <Container maxWidth="xs" style={{}}>
       <CssBaseline />
-      <Paper elevation={3} style={{ padding: '20px', textAlign: 'center' }}>
+      <Paper elevation={3} style={{ padding: '20px', textAlign: 'center', }}>
         <Typography variant="h5" gutterBottom>
           Student Signup
         </Typography>

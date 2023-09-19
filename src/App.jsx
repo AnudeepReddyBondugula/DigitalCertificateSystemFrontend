@@ -10,6 +10,9 @@ import IssueCertificate from './components/organization/IssueCertificate'
 import VerifyCertificate from './components/organization/VerifyCertificate'
 import DigiLocker from './components/student/DigiLocker';
 import PageNotFound from './components/PageNotFound'
+
+
+
 export default function App() {
 	return (
 		<div>
