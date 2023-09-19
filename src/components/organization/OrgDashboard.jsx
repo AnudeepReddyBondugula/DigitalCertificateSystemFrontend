@@ -92,7 +92,7 @@ function OrganizationDashboard() {
           {/* Verify a Certificate */}
           <Paper elevation={3} sx={{ p: 2, width: '45%' }}>
           <Link to='/org/verify'>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h4" gutterBottom style={{color:'blue'}}>
               Verify a Certificate
             </Typography>
           </Link>

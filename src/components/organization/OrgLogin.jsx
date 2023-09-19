@@ -24,7 +24,7 @@ const OrgLogin = () => {
 
       if (response.status === 200) {
         const data = await response.json();
-        sessionStorage.jwtoken = data.token;
+        sessionStorage.jwToken = data.token;
         navigate("/org/dashboard");
       } else {
         alert("Invalid username or password");
