@@ -30,7 +30,7 @@ const OrgLogin = () => {
         alert("Invalid username or password");
       }
     } catch (err) {
-      console.log(err);
+      console.log("Error:", err);
       alert("Cannot perform fetch");
     }
   };
