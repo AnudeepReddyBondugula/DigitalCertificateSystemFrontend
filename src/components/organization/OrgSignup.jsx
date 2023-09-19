@@ -32,7 +32,6 @@ const OrgSignup = () => {
       })
     }
 try{
-
   const response = await fetch("http://localhost:3000/org/signup", req);
   const data = await response.json();
   if(response.status === 201){
