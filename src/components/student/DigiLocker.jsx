@@ -1,10 +1,19 @@
-function DigiLocker() {
+import CertificateList from './Certificate';
+
+const App = () => {
+  // Sample list of certificates
+  const certificates = [
+    { title: 'Certificate 1' },
+    { title: 'Certificate 2' },
+    { title: 'Certificate 3' },
+    // Add more certificates as needed
+  ];
+
   return (
     <div>
-      <h1>Welcome to Digi-Locker page</h1>
-      <h2>Coming Soon!</h2>
+      <CertificateList certificates={certificates} />
     </div>
-  )
-}
+  );
+};
 
-export default DigiLocker
+export default App;
