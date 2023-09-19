@@ -10,8 +10,8 @@ export const connectToMetaMask = async () =>{
             method : 'eth_requestAccounts'
         });
 
-        const provider = new ethers.WebSocketProvider(window.ethereum);
-        const signer = provider.getSigner();
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
         return {provider, signer}
     }
     catch(err){
@@ -25,7 +25,7 @@ export const issueCertificate = async (studentAddress, fileCID) => {
     }
     const {signer} = await connectToMetaMask();
     const contractAddress = sessionStorage.getItem('contractAddress');
-    const contractabi = getContractAbi();
+    const contractabi = await getContractAbi();
 
     const contract = new ethers.Contract(contractAddress, contractabi, signer);
     const result = await contract.safeMint(studentAddress, fileCID);

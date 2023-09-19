@@ -26,15 +26,17 @@ const IssueCertificate = () => {
     formData.append('student_address', studentAddress);
     formData.append('student_email', studentEmail);
     formData.append('student_name', studentName);
-    const response = await fetch('http://localhost:3000/org/mint', {
-      method : "POST",
-      headers : {
-        'Authorization' : sessionStorage.getItem('jwToken')
-      },
-      body : formData
-    });
-
-    console.log(await response.json());
+    // ! Enable at the time of deployment
+    // const response = await fetch('http://localhost:3000/org/mint', {
+    //   method : "POST",
+    //   headers : {
+    //     'Authorization' : sessionStorage.getItem('jwToken')
+    //   },
+    //   body : formData
+    // });
+    // const metadata_cid = (await response.json()).metadata_cid;
+    
+    await issueCertificate(studentAddress, 'QmNVGvBEfHxDF1ubYUxeBWAqMPUbkLbjBEVAiTMg8PMBSk');//! Replace later
   };
 
   return (
@@ -44,7 +46,7 @@ const IssueCertificate = () => {
         <Typography variant="h4" gutterBottom>
           Issue Certificate
         </Typography>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} autoComplete='off'>
           <TextField
             label="Student Address"
             variant="outlined"
