@@ -10,9 +10,37 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function StudentDashboard() {
+  const navigate = useNavigate();
+  const [responseData, setResponseData] = useState(undefined);
+  useEffect(() => {
+    const jwToken = sessionStorage.getItem('jwToken');
+    if (!jwToken){
+      navigate('/user/login');
+      return;
+    }
+
+    const fetchData = async () =>{
+      const response = await fetch("http://localhost:3000/user/dashboard", {
+        method : "GET",
+        headers : {
+          "Content-Type" : "application/json",
+          "Authorization" : sessionStorage.getItem('jwToken')
+        }
+      })
+
+      setResponseData(await response.json());
+    };
+    fetchData()
+    .then(()=> alert('Got'));
+
+
+  }, [navigate]);
+
+
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleProfileClick = (event) => {
@@ -25,6 +53,7 @@ function StudentDashboard() {
 
   const handleLogout = () => {
     // Implement logout logic here
+    sessionStorage.removeItem('jwToken');
   };
 
   return (

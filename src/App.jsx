@@ -9,7 +9,7 @@ import OrgDashboard from './components/organization/OrgDashboard'
 import IssueCertificate from './components/organization/IssueCertificate'
 import VerifyCertificate from './components/organization/VerifyCertificate'
 import DigiLocker from './components/student/DigiLocker';
-
+import PageNotFound from './components/PageNotFound'
 export default function App() {
 	return (
 		<div>
@@ -24,8 +24,6 @@ export default function App() {
 				<Route path='/org/dashboard' element={<OrgDashboard/>} />
 				<Route path='/org/issue' element={<IssueCertificate/>} />
 				<Route path='/org/verify' element={<VerifyCertificate/>} />
-
-
 			</Routes>
 		</div>
 	)

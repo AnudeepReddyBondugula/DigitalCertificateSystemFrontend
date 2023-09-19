@@ -1,11 +1,38 @@
 import { Container, Typography, TextField, Button, Paper, CssBaseline } from '@mui/material';
-
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 const OrgLogin = () => {
-  const handleSubmit = (e) => {
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (sessionStorage.getItem('jwToken')) navigate('/org/dashboard');
+  }, [navigate]);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add login logic here
+    try {
+      const response = await fetch("http://localhost:3000/org/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.status === 200) {
+        const data = await response.json();
+        sessionStorage.jwtoken = data.token;
+        navigate("/org/dashboard");
+      } else {
+        alert("Invalid username or password");
+      }
+    } catch (err) {
+      console.log(err);
+      alert("Cannot perform fetch");
+    }
   };
 
   return (
@@ -18,9 +45,11 @@ const OrgLogin = () => {
         <form onSubmit={handleSubmit}>
           <TextField
             label="Email"
+            type='email'
             variant="outlined"
             fullWidth
             margin="normal"
+            onChange={e => setEmail(e.target.value)}
             required
           />
           <TextField
@@ -29,6 +58,7 @@ const OrgLogin = () => {
             variant="outlined"
             fullWidth
             margin="normal"
+            onChange={e => setPassword(e.target.value)}
             required
           />
           <Button

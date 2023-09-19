@@ -1,12 +1,53 @@
 import { Container, Typography, TextField, Button, Paper, CssBaseline } from '@mui/material';
-
 import { Link } from 'react-router-dom';
-
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const OrgSignup = () => {
-  const handleSubmit = (e) => {
+
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [retypePassword, setRetypePassword] = useState('');
+  const [privatekey, setPrivatekey] = useState('');
+  const [name, setName] = useState('');
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (retypePassword !== password) {
+      alert("Passwords doesn't match");
+      return;
+    }
     // Add signup logic here
+    const req = {
+      method : "POST",
+      headers : {
+        "Content-Type" : "application/json"
+      },
+      body : JSON.stringify({
+        email,
+        password,
+        privatekey,
+        name
+      })
+    }
+try{
+
+  const response = await fetch("http://localhost:3000/org/signup", req);
+  const data = await response.json();
+  if(response.status === 201){
+    sessionStorage.jwToken = data.token;
+      navigate("/org/dashboard");
+      return;
+    }
+    else{
+      alert(data.message);
+    }
+  }
+  catch(err){
+    console.log(err);
+    alert("Failed to perform fetch!");
+  }
   };
 
   return (
@@ -19,9 +60,11 @@ const OrgSignup = () => {
         <form onSubmit={handleSubmit}>
           <TextField
             label="Email"
+            type='email'
             variant="outlined"
             fullWidth
             margin="normal"
+            onChange={e => setEmail(e.target.value)}
             required
           />
           <TextField
@@ -30,6 +73,7 @@ const OrgSignup = () => {
             variant="outlined"
             fullWidth
             margin="normal"
+            onChange={e => setPassword(e.target.value)}
             required
           />
           <TextField
@@ -38,13 +82,7 @@ const OrgSignup = () => {
             variant="outlined"
             fullWidth
             margin="normal"
-            required
-          />
-          <TextField
-            label="Aadhar Card"
-            variant="outlined"
-            fullWidth
-            margin="normal"
+            onChange={e => setRetypePassword(e.target.value)}
             required
           />
           <TextField
@@ -52,13 +90,15 @@ const OrgSignup = () => {
             variant="outlined"
             fullWidth
             margin="normal"
+            onChange={e => setPrivatekey(e.target.value)}
             required
           />
           <TextField
-            label="Full Name (as per Aadhar Card)"
+            label="Name of the Organization"
             variant="outlined"
             fullWidth
             margin="normal"
+            onChange={e => setName(e.target.value)}
             required
           />
           <Button

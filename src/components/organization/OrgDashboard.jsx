@@ -10,9 +10,19 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function OrganizationDashboard() {
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    const jwToken = sessionStorage.getItem('jwToken');
+    if (!jwToken){
+      navigate('/org/login');
+      return;
+    }
+  }, [navigate]);
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleProfileClick = (event) => {

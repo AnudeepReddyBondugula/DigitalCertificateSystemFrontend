@@ -1,9 +1,53 @@
 import { Container, Typography, TextField, Button, Paper, CssBaseline } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 const StudentSignup = () => {
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [retypePassword, setRetypePassword] = useState('');
+  const [aadharcard, setAadharcard ] = useState('');
+  const [privatekey, setPrivatekey] = useState('');
+  const [name, setName] = useState('');
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (retypePassword !== password) {
+      alert("Passwords doesn't match");
+      return;
+    }
     // Add signup logic here
+    const req = {
+      method : "POST",
+      headers : {
+        "Content-Type" : "application/json"
+      },
+      body : JSON.stringify({
+        email,
+        password,
+        aadharcard,
+        privatekey,
+        name
+      })
+    }
+try{
+
+  const response = await fetch("http://localhost:3000/user/signup", req);
+  const data = await response.json();
+  if(response.status === 201){
+    sessionStorage.setItem('jwToken', data.token);
+      navigate("/user/dashboard");
+    }
+    else{
+      alert(data.message);
+    }
+  }
+  catch(err){
+    console.log(err);
+    alert("Failed to perform fetch!");
+  }
   };
 
   return (
@@ -13,12 +57,14 @@ const StudentSignup = () => {
         <Typography variant="h5" gutterBottom>
           Student Signup
         </Typography>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} autoComplete='off'>
           <TextField
             label="Email"
+            type='email'
             variant="outlined"
             fullWidth
             margin="normal"
+            onChange={e => setEmail(e.target.value)}
             required
           />
           <TextField
@@ -27,6 +73,7 @@ const StudentSignup = () => {
             variant="outlined"
             fullWidth
             margin="normal"
+            onChange={e => setPassword(e.target.value)}
             required
           />
           <TextField
@@ -35,6 +82,7 @@ const StudentSignup = () => {
             variant="outlined"
             fullWidth
             margin="normal"
+            onChange={e => setRetypePassword(e.target.value)}
             required
           />
           <TextField
@@ -42,6 +90,7 @@ const StudentSignup = () => {
             variant="outlined"
             fullWidth
             margin="normal"
+            onChange={e => setAadharcard(e.target.value)}
             required
           />
           <TextField
@@ -49,6 +98,7 @@ const StudentSignup = () => {
             variant="outlined"
             fullWidth
             margin="normal"
+            onChange={e => setPrivatekey(e.target.value)}
             required
           />
           <TextField
@@ -56,6 +106,7 @@ const StudentSignup = () => {
             variant="outlined"
             fullWidth
             margin="normal"
+            onChange={e => setName(e.target.value)}
             required
           />
           <Button
