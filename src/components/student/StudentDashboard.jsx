@@ -58,6 +58,8 @@ function StudentDashboard() {
   const handleLogout = () => {
     // Implement logout logic here
     sessionStorage.removeItem('jwToken');
+    navigate('/');
+    return;
   };
 
   return (
@@ -72,7 +74,7 @@ function StudentDashboard() {
           
           {/* Notifications and Profile Icons */}
           <IconButton color="inherit">
-            <Badge badgeContent={5} color="error">
+            <Badge color="error">
               <NotificationsIcon sx={{fontSize : 32}}/>
             </Badge>
           </IconButton>

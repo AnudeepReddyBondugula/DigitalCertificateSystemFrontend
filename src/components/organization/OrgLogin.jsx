@@ -24,13 +24,13 @@ const OrgLogin = () => {
 
       if (response.status === 200) {
         const data = await response.json();
-        sessionStorage.jwtoken = data.token;
+        sessionStorage.jwToken = data.token;
         navigate("/org/dashboard");
       } else {
         alert("Invalid username or password");
       }
     } catch (err) {
-      console.log(err);
+      console.log("Error:", err);
       alert("Cannot perform fetch");
     }
   };
