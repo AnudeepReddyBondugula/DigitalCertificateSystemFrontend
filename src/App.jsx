@@ -9,10 +9,16 @@ import OrgDashboard from './components/organization/OrgDashboard'
 import IssueCertificate from './components/organization/IssueCertificate'
 import VerifyCertificate from './components/organization/VerifyCertificate'
 import DigiLocker from './components/student/DigiLocker';
+<<<<<<< HEAD
+//import PageNotFound from './components/PageNotFound';
+import Notifications from './components/student/Notifications';
+//import RequestNotifications from './components/student/RequestNotifications';
+=======
 import PageNotFound from './components/PageNotFound'
 
 
 
+>>>>>>> 9b6e6232955c60f279ec51e7b52d88bcfa480bb4
 export default function App() {
 	return (
 		<div>
@@ -25,8 +31,10 @@ export default function App() {
 				<Route path='/org/login' element={<OrgLogin/>} />
 				<Route path='/org/signup' element={<OrgSignup/>} />
 				<Route path='/org/dashboard' element={<OrgDashboard/>} />
+				<Route path='/dashboard' element={<StudentDashboard/>} />
 				<Route path='/org/issue' element={<IssueCertificate/>} />
 				<Route path='/org/verify' element={<VerifyCertificate/>} />
+				<Route path='user/dashboard/notifications' element={<Notifications/>}/>
 			</Routes>
 		</div>
 	)

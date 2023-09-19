@@ -19,7 +19,7 @@ function StudentDashboard() {
   useEffect(() => {
     const jwToken = sessionStorage.getItem('jwToken');
     if (!jwToken){
-      navigate('/user/login');
+      // navigate('/user/login');
       return;
     }
 
@@ -40,7 +40,7 @@ function StudentDashboard() {
 
   }, [navigate]);
 
-
+  const [anchorEl2, setAnchorEl2] =useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleProfileClick = (event) => {
@@ -50,6 +50,10 @@ function StudentDashboard() {
   const handleProfileClose = () => {
     setAnchorEl(null);
   };
+  const handleNotificationClose = () =>
+  {
+    setAnchorEl2(null);
+  }
 
   const handleLogout = () => {
     // Implement logout logic here
@@ -74,6 +78,14 @@ function StudentDashboard() {
               <NotificationsIcon sx={{fontSize : 32}}/>
             </Badge>
           </IconButton>
+          <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleProfileClose}
+            >
+              <MenuItem onClick={handleProfileClose}><Link to='/'>Profile</Link></MenuItem>
+              <MenuItem onClick={handleLogout}><Link to='/user/login'>Logout</Link></MenuItem>
+            </Menu>
           <IconButton
               size="large"
               edge="end"
@@ -107,6 +119,7 @@ function StudentDashboard() {
           </Paper>
         </Box>
       </Container>
+    
     </div>
   );
 }
