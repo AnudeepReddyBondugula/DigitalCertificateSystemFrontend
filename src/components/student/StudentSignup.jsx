@@ -39,13 +39,14 @@ try{
   if(response.status === 201){
     sessionStorage.setItem('jwToken', data.token);
       navigate("/user/dashboard");
+      return;
     }
     else{
       alert(data.message);
     }
   }
   catch(err){
-    console.log(err);
+    console.log("Error:",err);
     alert("Failed to perform fetch!");
   }
   };

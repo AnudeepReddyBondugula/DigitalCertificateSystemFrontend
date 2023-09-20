@@ -23,13 +23,19 @@ export const issueCertificate = async (studentAddress, fileCID) => {
     if (!sessionStorage.getItem('contractAddress')){
         getContractAddress();
     }
-    const {signer} = await connectToMetaMask();
-    const contractAddress = sessionStorage.getItem('contractAddress');
-    const contractabi = await getContractAbi();
-
-    const contract = new ethers.Contract(contractAddress, contractabi, signer);
-    const result = await contract.safeMint(studentAddress, fileCID);
-    console.log("Transaction Hash tx :",result);
+    try{
+        const {signer} = await connectToMetaMask();
+        const contractAddress = sessionStorage.getItem('contractAddress');
+        const contractabi = await getContractAbi();
+        
+        const contract = new ethers.Contract(contractAddress, contractabi, signer);
+        const result = await contract.safeMint(studentAddress, fileCID);
+        console.log("Transaction Hash tx :",result);
+        alert("Certificate Minted Successfully!");
+    }
+    catch(err){
+        console.log("Error:", err);
+    }
 
 }
 

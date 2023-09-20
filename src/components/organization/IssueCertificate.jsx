@@ -18,6 +18,9 @@ const IssueCertificate = () => {
   const [studentEmail, setStudentEmail] = useState('');
   const [studentName, setStudentName] = useState('');
   const [certificateFile, setCertificateFile] = useState(null);
+  const [issueDate, setIssueDate] = useState('');
+  const [expireDate, setExpireDate] = useState('');
+  const [certificatename, setCertificateName] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,17 +29,20 @@ const IssueCertificate = () => {
     formData.append('student_address', studentAddress);
     formData.append('student_email', studentEmail);
     formData.append('student_name', studentName);
+    formData.append('issue_date', issueDate);
+    formData.append('expire_date', expireDate);
+    formData.append('certificate_name', certificatename);
     // ! Enable at the time of deployment
-    // const response = await fetch('http://localhost:3000/org/mint', {
-    //   method : "POST",
-    //   headers : {
-    //     'Authorization' : sessionStorage.getItem('jwToken')
-    //   },
-    //   body : formData
-    // });
-    // const metadata_cid = (await response.json()).metadata_cid;
+    const response = await fetch('http://localhost:3000/org/mint', {
+      method : "POST",
+      headers : {
+        'Authorization' : sessionStorage.getItem('jwToken')
+      },
+      body : formData
+    });
+    const metadata_cid = (await response.json()).metadata_cid;
     
-    await issueCertificate(studentAddress, 'QmNVGvBEfHxDF1ubYUxeBWAqMPUbkLbjBEVAiTMg8PMBSk');//! Replace later
+    await issueCertificate(studentAddress, metadata_cid);
   };
 
   return (
@@ -74,6 +80,32 @@ const IssueCertificate = () => {
             value={studentName}
             onChange={(e) => setStudentName(e.target.value)}
             required
+          />
+          <TextField
+            label="Certificate Name"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={certificatename}
+            onChange={(e) => setCertificateName(e.target.value)}
+            required
+          />
+          <TextField
+            label="Issued Date"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={issueDate}
+            onChange={(e) => setIssueDate(e.target.value)}
+            required
+          />
+          <TextField
+            label="Expire Date"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={expireDate}
+            onChange={(e) => setExpireDate(e.target.value)}
           />
           <input
             type="file"

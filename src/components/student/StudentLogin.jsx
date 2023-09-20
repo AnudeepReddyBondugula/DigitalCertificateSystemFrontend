@@ -32,6 +32,7 @@ const StudentLogin = () => {
         const data = await response.json();
         sessionStorage.setItem('jwToken', data.token);
         navigate("/user/dashboard");
+        return;
       } else {
         alert("Invalid username or password");
       }

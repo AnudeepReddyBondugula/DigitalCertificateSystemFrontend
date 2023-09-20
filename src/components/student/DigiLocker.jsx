@@ -1,19 +1,9 @@
-import CertificateList from './Certificate';
+import Certificates from './Certificates'
 
-const App = () => {
-  // Sample list of certificates
-  const certificates = [
-    { title: 'Certificate 1' },
-    { title: 'Certificate 2' },
-    { title: 'Certificate 3' },
-    // Add more certificates as needed
-  ];
-
+function DigiLocker() {
   return (
-    <div>
-      <CertificateList certificates={certificates} />
-    </div>
-  );
-};
+        <Certificates></Certificates>
+  )
+}
 
-export default App;
+export default DigiLocker

@@ -15,11 +15,12 @@ import { useNavigate } from 'react-router-dom';
 
 function StudentDashboard() {
   const navigate = useNavigate();
+  // eslint-disable-next-line no-unused-vars
   const [responseData, setResponseData] = useState(undefined);
   useEffect(() => {
     const jwToken = sessionStorage.getItem('jwToken');
     if (!jwToken){
-      // navigate('/user/login');
+      navigate('/user/login');
       return;
     }
 
@@ -35,12 +36,11 @@ function StudentDashboard() {
       setResponseData(await response.json());
     };
     fetchData()
-    .then(()=> alert('Got'));
+    // .then(()=> alert('Got'));
 
 
   }, [navigate]);
 
-  const [anchorEl2, setAnchorEl2] =useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleProfileClick = (event) => {
@@ -50,10 +50,11 @@ function StudentDashboard() {
   const handleProfileClose = () => {
     setAnchorEl(null);
   };
-  const handleNotificationClose = () =>
-  {
-    setAnchorEl2(null);
+
+  const handleProfile = () => {
+    navigate('/user/profile');
   }
+  
 
   const handleLogout = () => {
     // Implement logout logic here
@@ -78,14 +79,6 @@ function StudentDashboard() {
               <NotificationsIcon sx={{fontSize : 32}}/>
             </Badge>
           </IconButton>
-          <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleProfileClose}
-            >
-              <MenuItem onClick={handleProfileClose}><Link to='/'>Profile</Link></MenuItem>
-              <MenuItem onClick={handleLogout}><Link to='/user/login'>Logout</Link></MenuItem>
-            </Menu>
           <IconButton
               size="large"
               edge="end"
@@ -100,8 +93,8 @@ function StudentDashboard() {
               open={Boolean(anchorEl)}
               onClose={handleProfileClose}
             >
-              <MenuItem onClick={handleProfileClose}><Link to='/'>Profile</Link></MenuItem>
-              <MenuItem onClick={handleLogout}><Link to='/user/login'>Logout</Link></MenuItem>
+              <MenuItem onClick={handleProfile}>Profile</MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
         </Toolbar>
       </AppBar>
