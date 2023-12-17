@@ -1,8 +1,8 @@
-import { AppBar, Button, Toolbar, Typography, Avatar, Menu, MenuItem, Container, Grid, Card} from "@mui/material";
+import { AppBar, Button, Toolbar, Typography, Avatar, Menu, MenuItem, Container, Grid} from "@mui/material";
 import { useState } from "react";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { Link, useNavigate } from "react-router-dom";
-import Certificate from "./Certificate";
+import Certificate from "../Certificate";
 
 const styles = {
     gridStyle : {
