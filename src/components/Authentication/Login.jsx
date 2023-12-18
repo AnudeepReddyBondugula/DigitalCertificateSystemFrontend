@@ -9,7 +9,7 @@ import {
   Alert,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import { loginAccount, verifyToken } from "../../utils/authentication";
+import { loginAccount, verifyAndRedirect } from "../../utils/authentication";
 
 const styles = {
   bodyStyle: {
@@ -23,7 +23,6 @@ const styles = {
     flexDirection: "column",
     alignItems: "center",
     padding: "2rem",
-    // backgroundColor: 'rgba(255, 255, 255, 0.8)',
     borderRadius: "0.5rem",
     width: "100%",
     maxWidth: "600px", // Adjust the maximum width as needed
@@ -57,21 +56,16 @@ const styles = {
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
+  const [notify, setNotify] = useState(null);
   const navigate = useNavigate();
 
 useEffect(() => {
     const func = async () => {
         try {
-            if (await verifyToken()) {
-                navigate("/dashboard");
-            } else{
-                sessionStorage.removeItem("JWToken");
-                sessionStorage.removeItem("role");
-            }
+            await verifyAndRedirect(navigate, "/dashboard")
         } 
         catch (err) {
-            setError(() => {
+            setNotify(() => {
                 return {
                     severity: "error",
                     title: "Error: ",
@@ -86,11 +80,18 @@ useEffect(() => {
 const handleSubmit = async (e) => {
     try{
         e.preventDefault();
-        await loginAccount(email, password);
-        navigate("/dashboard");
+        const result = await loginAccount(email, password);
+        setNotify({
+            severity : result.returnValue ? "success" : "error",
+            title : result.returnValue ? "Login Success: " : "Login Failed: ",
+            message : result.returnValue ? result.message : result.error
+        })
+        if (result.returnValue){
+            navigate("/dashboard");
+        }
     }
     catch (err) {
-        setError(() => {
+        setNotify(() => {
             return {
                 severity: "error",
                 title: "Error: ",
@@ -104,23 +105,23 @@ const handleAlertClose = (e, reason) => {
     if (reason === "clickaway") {
         return;
     }
-    setError(null);
+    setNotify(null);
 };
 
     return (
         <div style={styles.bodyStyle}>
-            {error && (
+            {notify && (
                 <Snackbar
-                    open={!!error.message}
+                    open={!!notify.message}
                     autoHideDuration={3000}
                     onClose={handleAlertClose}>
                     <Alert
                         onClose={handleAlertClose}
                         variant="standard"
-                        severity={error.severity}
+                        severity={notify.severity}
                         sx={{ width: "100%" }}>
-                        <strong>{error.title}</strong>
-                        {error.message}
+                        <strong>{notify.title}</strong>
+                        {notify.message}
                     </Alert>
                     </Snackbar>
             )}

@@ -3,9 +3,9 @@ import WelcomePage from "./components/WelcomePage";
 import Login from "./components/Authentication/Login";
 import Signup from "./components/Authentication/SignUp";
 import Dashboard from "./components/Dashboard";
-import DigiLocker from "./components/DigiLocker";
+import DigiLocker from "./components/User/DigiLocker";
 import VerifyCertificate from "./components/VerifyCertificate";
-import IssueCertificate from "./components/IssueCertificate";
+import IssueCertificate from "./components/Organization/IssueCertificate";
 import BalancePage from "./components/Organization/BalancePage";
 
 

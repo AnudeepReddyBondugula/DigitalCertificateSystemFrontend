@@ -29,7 +29,7 @@ function OrganizationDashboard() {
     };
     const handleLogout = () => {
         handleClose();
-        sessionStorage.removeItem("JWToken");
+        sessionStorage.removeItem("jwToken");
         sessionStorage.removeItem("role");
         navigate("/login");
     }

@@ -1,4 +1,3 @@
-// WelcomePage.jsx
 import { Container, Typography, Button, AppBar, Toolbar} from '@mui/material';
 import { Link } from 'react-router-dom';
 

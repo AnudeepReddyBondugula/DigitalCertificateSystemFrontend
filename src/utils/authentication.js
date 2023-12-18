@@ -1,43 +1,51 @@
 const constants = import.meta.env;
+import { sendRequest } from "../Services/HttpProvider";
 
-const verifyToken = async () => {
-    if (sessionStorage.getItem("JWToken")){
-        const response = await fetch(constants.VITE_BACKEND_URL + '/dashboard', {
-            method : "GET",
-            headers : {
-                "Content-Type" : "application/json",
-                "Authorization" : sessionStorage.getItem("JWToken")
-            }
-        })
-
-        const {message} = await response.json();
-
-        return message !== "Wrong Token";
+const verifyToken = async (token) => {
+    const {status, responseBody} = await sendRequest("/dashboard", "GET", undefined, {"Authorization" : token});
+    if ((status >= 400)){
+        sessionStorage.removeItem("jwToken");
+        sessionStorage.removeItem("role");
+        return false;
+    }
+    else{
+        sessionStorage.setItem("role", responseBody.role);
+        return true;
     }
 }
 
+const verifyAndRedirect = async (navigate, redirectSuccessPath, redirectFailedPath) => {
+    if (sessionStorage.getItem("jwToken") && await verifyToken(sessionStorage.getItem("jwToken"))){
+        if (redirectSuccessPath) navigate(redirectSuccessPath);
+    } else{
+        if (redirectFailedPath) navigate(redirectFailedPath);
+    }
+    
+}
+
 const loginAccount = async (username, password) => {
-    const response = await fetch(constants.VITE_BACKEND_URL + "/login", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-    });
+    const {status, responseBody} = await sendRequest("/login", "POST", JSON.stringify({username, password}));
 
-    const resBody = await response.json();
-
-    if (response.status >= 400) throw Error(response.status + " " + resBody.message);
+    if (status >= 400){
+        return {
+            returnValue : false,
+            error : status + " " + responseBody.error
+        }
+    }
     else{
-        const { jwtoken, role } = resBody;
-        sessionStorage.setItem("JWToken", "Bearer " + jwtoken);
+        const { jwtoken, role } = responseBody;
+        sessionStorage.setItem("jwToken", jwtoken);
         sessionStorage.setItem("role", role);
+        return {
+            returnValue : true,
+            message : status + " " + responseBody.message
+        }
     }
 }
 
 const logoutAccount = (navigate) => {
     sessionStorage.removeItem("role");
-    sessionStorage.removeItem("JWToken");
+    sessionStorage.removeItem("jwToken");
     navigate("/");
 }
 
@@ -82,4 +90,4 @@ const createAccount = async ({
 
 
 
-export {verifyToken, createAccount, loginAccount, logoutAccount};
+export {verifyToken, createAccount, loginAccount, logoutAccount, verifyAndRedirect};

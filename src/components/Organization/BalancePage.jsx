@@ -1,5 +1,5 @@
 // BalancePage.jsx
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Container, Typography, Grid, TextField, Button, Card, CardContent } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,9 +11,12 @@ const BalancePage = () => {
       navigate("/dashboard");
     }
   });
-  const [cryptoAddress, setCryptoAddress] = useState('');
-  const [cryptoValue, setCryptoValue] = useState('');
-  const [alert, setAlert] = useState(null);
+    const [cryptoAddress, setCryptoAddress] = useState('');
+    const [cryptoValue, setCryptoValue] = useState('');
+    
+    const [alert, setNotify] = useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
   
   const handleCryptoPayment = () => {
     // Replace this with your logic for processing crypto payments

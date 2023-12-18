@@ -73,7 +73,7 @@ const Signup = () => {
                 if (await verifyToken()) {
                     navigate("/dashboard");
                 }
-                else sessionStorage.removeItem("JWToken");
+                else sessionStorage.removeItem("jwToken");
             } catch (err) {
                 setError(() => {
                     return {

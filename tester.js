@@ -1,13 +1,25 @@
-import { sendRequest } from "./src/Services/HttpProvider.js";
+import { useNavigate } from "react-router-dom";
 
-async function main(){
-    const {status, responseBody} = await sendRequest("/login", "POST", JSON.stringify({
-        username : "anudeepreddybondugula@gmail.com",
-        password : 123
-    }))
+function myError(msg = "") {
+    // this.name = "MyError"
+    // this.message = msg;
+}
 
-    console.log(status)
-    console.log(responseBody)
+myError.prototype = Error.prototype;
+
+
+function main() {
+    try{
+        const navigate = useNavigate();
+        throw myError("Hello WOrld!");
+    } catch (err){
+        if (err instanceof myError){
+            console.log("This is my Error");
+            console.log(err)
+        } else{
+            console.log("Not my Error")
+        }
+    }
 }
 
 main();

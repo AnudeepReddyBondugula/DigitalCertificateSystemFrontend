@@ -1,30 +1,74 @@
-import { AppBar, Button, Toolbar, Typography, Avatar, Menu, MenuItem, Container, Grid, Card} from "@mui/material";
-import { useState } from "react";
+import { AppBar, Button, Toolbar, Typography, Avatar, Menu, MenuItem, Container, Grid, Card, Snackbar, Alert} from "@mui/material";
+import { useState, useEffect } from "react";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { Link, useNavigate } from "react-router-dom";
+import { logoutAccount, verifyAndRedirect } from "../../utils/authentication";
 
 const styles = {
+	containerStyle : {
+		paddingTop : "100px"
+	}
 }
 
 function UserDashboard() {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const navigate = useNavigate();
+    const [notify, setNotify] = useState(null);
+
+	useEffect(() => {
+		const func = async () => {
+			try {
+				await verifyAndRedirect(navigate, null, "/login")
+			} 
+			catch (err) {
+				setNotify(() => {
+					return {
+						severity: "error",
+						title: "Error: ",
+						message: err.message,
+					};
+				});
+			}
+		};
+		func();
+	}, [navigate]);
+
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
     };
+
     const handleClose = () => {
       setAnchorEl(null);
     };
     const handleLogout = () => {
         handleClose();
-        sessionStorage.removeItem("JWToken");
-        sessionStorage.removeItem("role");
-        navigate("/login");
+        logoutAccount(navigate);
     }
+	const handleAlertClose = (e, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setNotify(null);
+    };
   return (
+	
     <div style={{width : "100vw", height : "100vh", backgroundColor : "#eeeeee"}}>
-
+	{notify && (
+                <Snackbar
+                    open={!!notify.message}
+                    autoHideDuration={3000}
+                    onClose={handleAlertClose}>
+                    <Alert
+                        onClose={handleAlertClose}
+                        variant="standard"
+                        severity={notify.severity}
+                        sx={{ width: "100%" }}>
+                        <strong>{notify.title}</strong>
+                        {notify.message}
+                    </Alert>
+                    </Snackbar>
+            )}	
     <AppBar>
     <Toolbar>
         <Typography variant="h5">User Dashboard</Typography>
