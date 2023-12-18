@@ -34,7 +34,8 @@ const IssueCertificate = () => {
 		};
 		func();
 	}, [navigate]);
-  const handleAlertClose = (e, reason) => {
+	
+	const handleAlertClose = (e, reason) => {
 		if (reason === "clickaway") {
 			return;
 		}
