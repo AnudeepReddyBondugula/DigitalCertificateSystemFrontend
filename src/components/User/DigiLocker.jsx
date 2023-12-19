@@ -1,9 +1,10 @@
-import { AppBar, Button, Toolbar, Typography, Avatar, Menu, MenuItem, Container, Grid, Snackbar, Alert} from "@mui/material";
+import { AppBar, Button, Toolbar, Typography, Avatar, Menu, MenuItem, Container, Stack, Snackbar, Alert, Paper} from "@mui/material";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Certificate from "../Certificate";
 import { logoutAccount, verifyAndRedirect } from "../../utils/authentication";
+import { sendRequest } from "../../Services/HttpProvider";
 
 const styles = {
     gridStyle : {
@@ -18,82 +19,19 @@ const styles = {
         borderRadius : "1rem",
         paddingLeft : "5rem"
 
-    }
+    },
+	paperStyle : {
+		padding : "1rem",
+		marginTop : "10px"
+	}
 }
-
-const certificatesData = [
-  {
-    id: 1,
-    imageUrl: 'src/assets/images/DigiLockerGIF.gif',
-    title: 'BlockChain Essentials',
-    issuer: 'Anurag University',
-    issuanceDate: '01-01-2022',
-    expiryDate: '01-01-2023',
-  },
-  {
-    id: 2,
-    imageUrl: 'src/assets/images/DigiLockerGIF.gif',
-    title: 'Certificate For AWS Cloud Essentials',
-    issuer: 'Organization A',
-    issuanceDate: '01-01-2022',
-    expiryDate: '01-01-2023',
-  },
-  {
-    id: 3,
-    imageUrl: 'src/assets/images/DigiLockerGIF.gif',
-    title: 'Certificate 1.....jghfgfg',
-    issuer: 'Organization A',
-    issuanceDate: '01-01-2022',
-    expiryDate: '01-01-2023',
-  },
-  {
-    id: 4,
-    imageUrl: 'src/assets/images/DigiLockerGIF.gif',
-    title: 'Certificate 1',
-    issuer: 'Organization A',
-    issuanceDate: '01-01-2022',
-    expiryDate: '01-01-2023',
-  },
-  {
-    id: 4,
-    imageUrl: 'src/assets/images/DigiLockerGIF.gif',
-    title: 'Certificate 1',
-    issuer: 'Organization A',
-    issuanceDate: '01-01-2022',
-    expiryDate: '01-01-2023',
-  },
-  {
-    id: 4,
-    imageUrl: 'src/assets/images/DigiLockerGIF.gif',
-    title: 'Certificate 1',
-    issuer: 'Organization A',
-    issuanceDate: '01-01-2022',
-    expiryDate: '01-01-2023',
-  },
-  {
-    id: 4,
-    imageUrl: 'src/assets/images/DigiLockerGIF.gif',
-    title: 'Certificate 1',
-    issuer: 'Organization A',
-    issuanceDate: '01-01-2022',
-    expiryDate: '01-01-2023',
-  },
-  {
-    id: 4,
-    imageUrl: 'src/assets/images/DigiLockerGIF.gif',
-    title: 'Certificate 1',
-    issuer: 'Organization A',
-    issuanceDate: '01-01-2022',
-    expiryDate: '01-01-2023',
-  },
-  // Add more certificate data as needed
-];
 
 function DigiLocker() {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const navigate = useNavigate();
     const [notify, setNotify] = useState(null);
+    const [certificatesMetaData, setCertificatesMetaData] = useState([]);
 
     useEffect(() => {
       const func = async () => {
@@ -112,13 +50,31 @@ function DigiLocker() {
       };
       func();
     }, [navigate]);
-    const handleAlertClose = (e, reason) => {
-      if (reason === "clickaway") {
-          return;
-      }
-      setNotify(null);
-    };
-
+	
+    
+    useEffect(() => {
+		const func = async () => {
+			const {status, responseBody} = await sendRequest('/digilocker', "GET", null)
+			if (!(status >= 400)){
+				const {listOfCertificatesMetaData} = responseBody;
+				setCertificatesMetaData(listOfCertificatesMetaData);
+			} else{
+				setNotify({
+					"severity" : "error",
+					"title" : "Error",
+					"message" : responseBody.error
+				})
+			}
+			
+		}
+		func();
+    }, [])
+	const handleAlertClose = (e, reason) => {
+		if (reason === "clickaway") {
+			return;
+		}
+		setNotify(null);
+	};
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
     };
@@ -175,18 +131,20 @@ function DigiLocker() {
     </Toolbar>
     </AppBar>
     <Container style={styles.containerStyle}>
-    <Grid container>
-        {certificatesData.map((certificate)=>{
+    {certificatesMetaData.length == 0 ?  <Paper style={styles.paperStyle}>
+			<Typography variant="h5"> No Certificates Available</Typography>
+		</Paper> : <Stack>
+        {certificatesMetaData.map((certificate)=>{
           return (<Certificate
-            key={certificate.id}
-            imageUrl={certificate.imageUrl}
-            title={certificate.title}
-            issuer={certificate.issuer}
-            issuanceDate={certificate.issuanceDate}
-            expiryDate={certificate.expiryDate}
+            key={certificate.certificateID}
+            title={certificate.certificateMetaData.CertificateName}
+            issuer={certificate.certificateMetaData.Issuer.organizationName}
+            issuanceDate={certificate.certificateMetaData.IssueDate}
+            expiryDate={certificate.certificateMetaData.ExpiryDate}
           />)
         })}
-    </Grid>
+    </Stack>}
+    
     </Container>
     </div>
 

@@ -26,7 +26,7 @@ const BalancePage = () => {
 		};
 		func();
 	}, [navigate]);
-    const [cryptoAddress, setCryptoAddress] = useState('');
+    const [cryptoAddress, setCryptoAddress] = useState(JSON.parse(sessionStorage.getItem("details")).walletAddress);
     const [cryptoValue, setCryptoValue] = useState('');
 
     const [notify, setNotify] = useState(null);

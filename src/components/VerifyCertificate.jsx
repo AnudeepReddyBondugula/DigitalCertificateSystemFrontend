@@ -1,20 +1,41 @@
 // VerifyCertificate.jsx
 import { useEffect, useState } from 'react';
-import { Container, Typography, TextField, Button, Card, CardContent, Snackbar, Alert, AppBar, Toolbar, MenuItem, Avatar, Menu } from '@mui/material';
+import { Container, Typography, TextField, Button, Snackbar, Alert, AppBar, Toolbar, MenuItem, Avatar, Menu, Stack, Paper } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-
+import Certificate from './Certificate';
 import { useNavigate } from 'react-router-dom';
 import { logoutAccount, verifyAndRedirect } from '../utils/authentication';
+import { sendRequest } from '../Services/HttpProvider';
+
+const styles = {
+    gridStyle : {
+        padding : "1rem",
+        textAlign : "center"
+    },
+
+    containerStyle : {
+        // backgroundColor : "#3498db", 
+        padding : "1rem",
+        paddingTop : "5rem",
+        borderRadius : "1rem",
+        paddingLeft : "5rem"
+
+    },
+	paperStyle : {
+		padding : "1rem",
+		marginTop : "20px",
+	}
+}
 
 const VerifyCertificate = () => {
 	const [certificateId, setCertificateId] = useState('');
 	const [userId, setUserId] = useState('');
-	const [verificationResult, setVerificationResult] = useState(null);
+	const [verificationResult, setVerificationResult] = useState(false);
 	const navigate = useNavigate();
 	const [notify, setNotify] = useState(null);
 	const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
-
+	const [certificatesMetaData, setCertificatesMetaData] = useState([]);
 
 	useEffect(() => {
 		const func = async () => {
@@ -34,6 +55,14 @@ const VerifyCertificate = () => {
 		func();
 	}, [navigate]);
 
+	useEffect(() => {
+		const func = async () => {
+			
+			
+		}
+		func();
+    }, [])
+
 	const handleAlertClose = (e, reason) => {
 		if (reason === "clickaway") {
 			return;
@@ -51,13 +80,25 @@ const VerifyCertificate = () => {
 		handleClose();
 		logoutAccount(navigate);
 	}
-	const handleVerify = () => {
-		// Replace this logic with your actual verification logic
-		// For this example, assume verification is successful if both fields are non-empty
-		const isVerified = certificateId.trim() !== '' && userId.trim() !== '';
-
-		// Set the verification result
-		setVerificationResult(isVerified ? 'Certificate is valid!' : 'Certificate verification failed.');
+	const handleVerify = async () => {
+		const body = {
+			userDetails : {
+				"username" : userId,
+				"certificateID" : certificateId
+			}
+		}
+		const {status, responseBody} = await sendRequest('/verify', "POST", JSON.stringify(body))
+		if (!(status >= 400)){
+			const {listOfCertificatesMetaData} = responseBody;
+			setCertificatesMetaData(listOfCertificatesMetaData);
+			setVerificationResult(true);
+		} else{
+			setNotify({
+				"severity" : "error",
+				"title" : "Error ",
+				"message" : responseBody.error
+			})
+		}
 	};
 
 	return (
@@ -105,15 +146,15 @@ const VerifyCertificate = () => {
       </Menu>
     </Toolbar>
     </AppBar>
-		<Container maxWidth="sm" style={{paddingTop : "100px"}}>
+		<Container  style={{paddingTop : "100px"}}>
 		<Typography variant="h4" align="center" gutterBottom>
 			Verify Certificate
 		</Typography>
 
 		{/* Verification Form */}
-		<form>
+		<form className='max-w-screen-md ml-auto mr-auto'>
 			<TextField
-			label="User ID"
+			label="Username"
 			variant="outlined"
 			fullWidth
 			margin="normal"
@@ -134,16 +175,19 @@ const VerifyCertificate = () => {
 		</form>
 
 		{/* Verification Result */}
-		{verificationResult && (
-			<Card style={{ marginTop: '2rem' }}>
-			<CardContent>
-				<Typography variant="h6" gutterBottom>
-				Verification Result
-				</Typography>
-				<Typography>{verificationResult}</Typography>
-			</CardContent>
-			</Card>
-		)}
+		{certificatesMetaData.length == 0 ? <>{ verificationResult && <Paper style={styles.paperStyle}>
+			<Typography variant="h5"> No Certificates Available</Typography>
+		</Paper>}</> : <Stack>
+        {certificatesMetaData.map((certificate)=>{
+          return (<Certificate
+            key={certificate.certificateID}
+            title={certificate.certificateMetaData.CertificateName}
+            issuer={certificate.certificateMetaData.Issuer.organizationName}
+            issuanceDate={certificate.certificateMetaData.IssueDate}
+            expiryDate={certificate.certificateMetaData.ExpiryDate}
+          />)
+        })}
+    </Stack>}
 		</Container>
 		</div>
 	);

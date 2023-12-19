@@ -1,9 +1,10 @@
 // IssueCertificate.jsx
 import { useState, useEffect } from 'react';
-import { Container, Typography, TextField, Button, Card, CardContent, Snackbar, Alert, AppBar, Toolbar, MenuItem, Avatar, Menu } from '@mui/material';
+import { Container, Typography, TextField, Button, Snackbar, Alert, AppBar, Toolbar, MenuItem, Avatar, Menu } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useNavigate } from 'react-router-dom';
 import { verifyAndRedirect, logoutAccount } from '../../utils/authentication';
+import { sendFormDataRequest } from '../../Services/HttpProvider';
 
 const IssueCertificate = () => {
 	const [certificateTitle, setCertificateTitle] = useState('');
@@ -11,7 +12,6 @@ const IssueCertificate = () => {
 	const [issuedDate, setIssuedDate] = useState((new Date()).toISOString());
 	const [expiryDate, setExpiryDate] = useState('');
 	const [pdfFile, setPdfFile] = useState(null);
-	const [issueResult, setIssueResult] = useState(null);
 	const navigate = useNavigate();
 	const [notify, setNotify] = useState(null);
 	const [anchorEl, setAnchorEl] = useState(null);
@@ -52,19 +52,34 @@ const IssueCertificate = () => {
 		handleClose();
 		logoutAccount(navigate);
 	}
+  const handleBalance = () => {
+    handleClose();
+    navigate("/balance");
+  }
 
-  const handleIssueCertificate = () => {
-    // Replace this logic with your actual certificate issuance logic
-    // For this example, assume issuance is successful if all fields are non-empty
-    const isIssued =
-      certificateTitle.trim() !== '' &&
-      candidateUsername.trim() !== '' &&
-      issuedDate.trim() !== '' &&
-      expiryDate.trim() !== '' &&
-      pdfFile !== null;
-
-    // Set the issuance result
-    setIssueResult(isIssued ? 'Certificate issued successfully!' : 'Failed to issue certificate.');
+  const handleIssueCertificate = async () => {
+    const formData = new FormData();
+    formData.append("certificateDetails", JSON.stringify({
+		"username": candidateUsername,
+		"issueDate": issuedDate,
+		"expiryDate": expiryDate,
+		"certificateName": certificateTitle
+	}));
+	formData.append("certificateFile", pdfFile);
+      const {status, responseBody} = await sendFormDataRequest('/issue', "PUT", formData)
+      if (!(status >= 400)){
+        setNotify({
+          "severity" : "success",
+          "title" : "Success: ",
+          "message" : responseBody.message
+        })
+      } else{
+        setNotify({
+          "severity" : "error",
+          "title" : "Error ",
+          "message" : responseBody.error
+        })
+      }
   };
 
 
@@ -108,6 +123,7 @@ const IssueCertificate = () => {
 			MenuListProps={{'aria-labelledby': 'basic-button',}}>
 				<MenuItem onClick={handleClose}>Profile</MenuItem>
 				<MenuItem onClick={handleClose}>My account</MenuItem>
+        <MenuItem onClick={handleBalance}>Balance</MenuItem>
 				<MenuItem onClick={handleLogout}>Logout</MenuItem>
 			</Menu>
 		</Toolbar>
@@ -117,7 +133,6 @@ const IssueCertificate = () => {
         Issue Certificate
       </Typography>
 
-      {/* Certificate Issue Form */}
       <form>
         <TextField
           label="Certificate Title"
@@ -170,18 +185,6 @@ const IssueCertificate = () => {
           Issue Certificate
         </Button>
       </form>
-
-      {/* Certificate Issue Result */}
-      {issueResult && (
-        <Card style={{ marginTop: '2rem' }}>
-          <CardContent>
-            <Typography variant="h6" gutterBottom>
-              Issue Result
-            </Typography>
-            <Typography>{issueResult}</Typography>
-          </CardContent>
-        </Card>
-      )}
     </Container>
     </div>
   );

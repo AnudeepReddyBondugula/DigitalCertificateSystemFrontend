@@ -10,6 +10,7 @@ const verifyToken = async (token) => {
     }
     else{
         sessionStorage.setItem("role", responseBody.role);
+        sessionStorage.setItem("details", JSON.stringify(responseBody.details));
         return true;
     }
 }

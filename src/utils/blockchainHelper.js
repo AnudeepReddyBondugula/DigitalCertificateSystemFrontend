@@ -1,6 +1,5 @@
 import { ethers} from "ethers"
 
-
 const getProvider = async () => {
     await window.ethereum.enable();
     const provider = new ethers.BrowserProvider(window.ethereum);

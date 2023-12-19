@@ -1,20 +1,35 @@
-// Certificate.jsx
-import React from 'react';
-import { Typography, Grid} from '@mui/material';
+/* eslint-disable react/prop-types */
+import { Typography, Paper} from '@mui/material';
 import { dontOverflowText } from '../utils/prettyPrint';
+import { Link } from 'react-router-dom';
+const styles = {
+	paperStyle : {
+		"padding" : "1rem",
+		"margin" : "10px"
+	},
 
-const Certificate = ({ imageUrl, title, issuer, issuanceDate, expiryDate }) => {
+	divStyle : {
+		display : "flex",
+		justifyContent : "space-between"
+	}
+}
 
+const Certificate = ({ title, issuer, issuanceDate, expiryDate }) => {
+	const handleDownload = async () => {
+		alert("Click on Download")
+	}
   return (
-    <Grid item style={{ width: "20rem", height : "20rem" ,margin: '1rem', backgroundColor : "white", padding: "1rem"}}>
-      <img style={{width:"100%", height : "75%"}} src={'src/assets/images/IssueCertificateImage.gif'}></img>
-      <Typography variant="h5">{dontOverflowText(title, 25)}</Typography>
-      <Typography variant='body4'>{dontOverflowText(issuer, 20)}</Typography>
-      <div style={{display: "flex", "justifyContent" : "space-between"}}>
-      <Typography variant='body4'>Issued: {issuanceDate}</Typography>
-      <Typography variant='body4'>Expires: {expiryDate}</Typography>
-      </div>
-    </Grid>
+    <Paper style={styles.paperStyle}>
+		<div style={styles.divStyle}>
+			<Typography variant="h5">{dontOverflowText(title, 30)}</Typography>
+			<Link variant='body4' onClick={handleDownload}>Download</Link>
+		</div>
+		<Typography variant='body4'>{dontOverflowText(issuer, 20)}</Typography>
+		<div style={styles.divStyle}>
+		<Typography variant='body4'>Issued: {issuanceDate}</Typography>
+		<Typography variant='body4'>Expires: {expiryDate}</Typography>
+		</div>
+    </Paper>
   );
 };
 
