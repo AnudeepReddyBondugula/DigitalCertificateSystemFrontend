@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import WelcomePage from "./components/WelcomePage";
+import AboutPage from "./components/AboutPage";
+import ContactPage from "./components/ContactPage";
 import Login from "./components/Authentication/Login";
 import Signup from "./components/Authentication/SignUp";
 import Dashboard from "./components/Dashboard";
@@ -10,11 +12,14 @@ import BalancePage from "./components/Organization/BalancePage";
 
 
 
+
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<WelcomePage/>}></Route>
+        <Route path="/AboutPage" element={<AboutPage/>}></Route>
+        <Route path="/ContactPage" element={<ContactPage/>}></Route>
         <Route path="/login" element={<Login/>}></Route>
         <Route path="/signup" element={<Signup/>}></Route>
         <Route path="/dashboard" element={<Dashboard/>}></Route>
