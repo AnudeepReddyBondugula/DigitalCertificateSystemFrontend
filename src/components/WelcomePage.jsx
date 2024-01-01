@@ -1,4 +1,4 @@
-import { Container, Typography, Button, AppBar, Toolbar} from '@mui/material';
+import { Container, Typography, Button, AppBar, Toolbar } from '@mui/material';
 import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined';
 import { Link } from 'react-router-dom';
 
@@ -11,18 +11,18 @@ const WelcomePage = () => {
         alignItems: 'center',
         justifyContent: 'center',
         minHeight: '100vh',
-        minWidth : '100vw',
-        backgroundColor: '#24487A', // Winter Ice Dark Blue
-        color: '#fff', // White text color
+        minWidth: '100vw',
+        background: 'linear-gradient(135deg, rgba(15,114,124,1) 10%, rgba(15,44,124,1) 60%, rgba(255,0,56,100) 90%)',
+        color: '#fff',
+        transition: 'background 1s ease-in-out',
       }}
     >
-      {/* Top App Bar with About and Contact */}
       <AppBar style={{ background: 'transparent', boxShadow: 'none' }}>
         <Toolbar style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Typography variant="h5" style={{ flexGrow: 1 }}>
-              <WorkspacePremiumOutlinedIcon style={{fontSize:'40'}}/>
             <Button color="inherit" component={Link} to="/">
-              <span style={{fontFamily:'Homizio', font:'Álvaro Thomáz', fontSize:'25px'}}>
+              <WorkspacePremiumOutlinedIcon style={{ fontSize: '40' }} />
+              <span style={{ fontFamily: 'Homizio', font: 'Álvaro Thomáz', fontSize: '25px' }}>
                 Digital Certificate System
               </span>
             </Button>

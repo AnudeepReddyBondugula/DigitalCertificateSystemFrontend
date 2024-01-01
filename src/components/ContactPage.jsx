@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import AboutPage from './AboutPage';
 import { AppBar, Button, Toolbar, Typography} from "@mui/material";
 import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined';
 

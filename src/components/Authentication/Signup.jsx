@@ -1,6 +1,7 @@
 // LoginOrganization.jsx
 import { useEffect, useState } from 'react';
-import { TextField, Button, Paper, Typography, Container, Alert, Snackbar, InputLabel, FormControl, Select, MenuItem} from '@mui/material';
+import { AppBar, Toolbar, TextField, Button, Paper, Typography, Container, Alert, Snackbar, InputLabel, FormControl, Select, MenuItem} from '@mui/material';
+import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined";
 import { Link, useNavigate } from 'react-router-dom';
 import { createAccount, verifyToken } from '../../utils/authentication';
 
@@ -48,7 +49,10 @@ const styles = {
         color: '#2980b9', // Blue color for the link
         textDecoration: 'none',
         marginTop: '1rem',
-      }
+      },
+    appBarStyle:{
+        backgroundColor : "#24487A",
+    },
 }
 
 
@@ -120,130 +124,147 @@ const Signup = () => {
 
 
   return (
-    <div style={styles.bodyStyle}>
-		{error && <Snackbar open={!!error.message} autoHideDuration={3000} onClose={handleAlertClose}>
-        <Alert onClose={handleAlertClose} variant='standard' severity={error.severity} sx={{ width: '100%' }}>
-		<strong>{error.title}</strong>
-          {error.message}
-        </Alert>
-      </Snackbar>}
-      <Container component="main" maxWidth="xs" style={styles.containerStyle}>
-        <Paper elevation={3}>
-          <form style={styles.formStyle} onSubmit={handleSubmit}>
-          <Typography component="h1" variant="h5" style={{ textAlign: 'center', marginBottom: '1rem' }}>
-            Create Account
+    <div>
+      <AppBar position="static" style={styles.appBarStyle}>
+        <Toolbar>
+        <Typography style={{ flexGrow: 1 }}>
+          <Button color="inherit" component={Link} to="/">
+          <WorkspacePremiumOutlinedIcon style={{ fontSize: '40' }}/>
+            <span style={{ fontFamily: 'Homizio', font: 'Álvaro Thomáz', fontSize: '25px' }}>
+              Digital Certificate System
+            </span>
+          </Button>
           </Typography>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              InputProps={{ style: styles.inputStyle }}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="fullName"
-              label="Full Name"
-              name="name"
-              autoComplete="name"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              InputProps={{ style: styles.inputStyle }}
-            />
-            <FormControl fullWidth variant="outlined" margin="normal">
-                <InputLabel id="role-label" style={styles.inputStyle}>Role</InputLabel>
-                <Select
-                    labelId="role-label"
-                    label="Role"
-                    name="role"
-                    value={role}
-                    onChange={(e)=>setRole(e.target.value)}
-                >
-                    <MenuItem value="user">User</MenuItem>
-                    <MenuItem value="organization">Organization</MenuItem>
-                </Select>
-            </FormControl>
-            {role == "user" ? <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="aadharNumber"
-              label="Aadahar Number"
-              name="aadharNumber"
-              autoComplete="aadharNumber"
-              value={aadharNumber}
-              onChange={(e) => setAadharNumber(e.target.value)}
-              InputProps={{ style: styles.inputStyle }}
-            /> : <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="organizationName"
-              label="Organization Name"
-              name="organizationName"
-              autoComplete="organizationName"
-              value={organizationName}
-              onChange={(e) => setOrganizationName(e.target.value)}
-              InputProps={{ style: styles.inputStyle }}
-            />}
-            
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              InputProps={{ style: styles.inputStyle }}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="ReTypePassword"
-              label="Retype Password"
-              type="password"
-              id="reTypepassword"
-              autoComplete="current-password"
-              value={retypePassword}
-              onChange={(e) => setReTypePassword(e.target.value)}
-              InputProps={{ style: styles.inputStyle }}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              style={styles.submitButtonStyle}
-            >
-              Sign Up
-            </Button>
-            <Typography variant="body2" style={{ textAlign: 'center', marginTop: '1rem' }}>
-                Aldready have an account?{' '}
-            <Link to="/login" style={styles.linkStyle}>
-              Login
-            </Link>
-          </Typography>
-          </form>
-        </Paper>
-      </Container>
+          <Button color="inherit" component={Link} to="/" style={{ marginRight: '1rem' }}>Home</Button>
+          <Button color="inherit" component={Link} to="/AboutPage" style={{ marginRight: '1rem' }}>About</Button>
+          <Button color="inherit" component={Link} to="/ContactPage">Contact</Button>
+        </Toolbar>
+      </AppBar>
+      <div style={styles.bodyStyle}>
+      {error && <Snackbar open={!!error.message} autoHideDuration={3000} onClose={handleAlertClose}>
+          <Alert onClose={handleAlertClose} variant='standard' severity={error.severity} sx={{ width: '100%' }}>
+      <strong>{error.title}</strong>
+            {error.message}
+          </Alert>
+        </Snackbar>}
+        <Container component="main" maxWidth="xs" style={styles.containerStyle}>
+          <Paper elevation={3}>
+            <form style={styles.formStyle} onSubmit={handleSubmit}>
+            <Typography component="h1" variant="h5" style={{ textAlign: 'center', marginBottom: '1rem' }}>
+              Create Account
+            </Typography>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                InputProps={{ style: styles.inputStyle }}
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="fullName"
+                label="Full Name"
+                name="name"
+                autoComplete="name"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                InputProps={{ style: styles.inputStyle }}
+              />
+              <FormControl fullWidth variant="outlined" margin="normal">
+                  <InputLabel id="role-label" style={styles.inputStyle}>Role</InputLabel>
+                  <Select
+                      labelId="role-label"
+                      label="Role"
+                      name="role"
+                      value={role}
+                      onChange={(e)=>setRole(e.target.value)}
+                  >
+                      <MenuItem value="user">User</MenuItem>
+                      <MenuItem value="organization">Organization</MenuItem>
+                  </Select>
+              </FormControl>
+              {role == "user" ? <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="aadharNumber"
+                label="Aadahar Number"
+                name="aadharNumber"
+                autoComplete="aadharNumber"
+                value={aadharNumber}
+                onChange={(e) => setAadharNumber(e.target.value)}
+                InputProps={{ style: styles.inputStyle }}
+              /> : <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="organizationName"
+                label="Organization Name"
+                name="organizationName"
+                autoComplete="organizationName"
+                value={organizationName}
+                onChange={(e) => setOrganizationName(e.target.value)}
+                InputProps={{ style: styles.inputStyle }}
+              />}
+              
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                InputProps={{ style: styles.inputStyle }}
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="ReTypePassword"
+                label="Retype Password"
+                type="password"
+                id="reTypepassword"
+                autoComplete="current-password"
+                value={retypePassword}
+                onChange={(e) => setReTypePassword(e.target.value)}
+                InputProps={{ style: styles.inputStyle }}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                style={styles.submitButtonStyle}
+              >
+                Sign Up
+              </Button>
+              <Typography variant="body2" style={{ textAlign: 'center', marginTop: '1rem' }}>
+                  Aldready have an account?{' '}
+              <Link to="/login" style={styles.linkStyle}>
+                Login
+              </Link>
+            </Typography>
+            </form>
+          </Paper>
+        </Container>
+      </div>
     </div>
   );
 };
